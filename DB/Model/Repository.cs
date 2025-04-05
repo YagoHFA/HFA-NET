@@ -41,6 +41,13 @@ namespace HFA.DB.Model
             context.SaveChanges();
         }
 
+        public void DeleteById(object id)
+        {
+            TEntity? entity  =  dbSet.Find(id);
+            if(entity != null)
+                dbSet.Remove(entity);
+        }
+
         public void DeleteMany(Expression<Func<TEntity, bool>> predicate)
         {
             IQueryable<TEntity> entities = dbSet.Where(predicate);
@@ -67,6 +74,11 @@ namespace HFA.DB.Model
         {
             var query = dbSet.Where(predicate);
             return orderBy != null ? orderBy(query) : query;
+        }
+
+        public TEntity? FindById(params object[] keyValues)
+        {
+            return dbSet.Find(keyValues);
         }
 
         public void Update(TEntity entity)
