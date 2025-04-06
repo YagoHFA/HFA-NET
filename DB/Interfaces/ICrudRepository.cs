@@ -14,6 +14,5 @@ namespace HFA.DB.Model.Interfaces
 
         void Update(TEntity entity);
         TEntity? FindById(params object[] keyValues);
-
     }
-}
+} 
