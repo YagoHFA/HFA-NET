@@ -16,13 +16,11 @@ namespace HFA.DB.Model
         public void Add(TEntity entity)
         {
             dbSet.Add(entity);
-            context.SaveChanges();
         }
 
         public void AddMany(IEnumerable<TEntity> entities)
         {
             dbSet.AddRange(entities);
-            context.SaveChanges();
         }
 
         public bool Any(Expression<Func<TEntity, bool>> predicate)
@@ -38,21 +36,24 @@ namespace HFA.DB.Model
         public void Delete(TEntity entity)
         {
             dbSet.Remove(entity);
-            context.SaveChanges();
         }
 
         public void DeleteById(object id)
         {
             TEntity? entity  =  dbSet.Find(id);
             if(entity != null)
-                dbSet.Remove(entity);
+            dbSet.Remove(entity);
         }
 
         public void DeleteMany(Expression<Func<TEntity, bool>> predicate)
         {
             IQueryable<TEntity> entities = dbSet.Where(predicate);
             dbSet.RemoveRange(entities);
-            context.SaveChanges();
+        }
+
+        public bool Exists(Predicate<TEntity> predicate)
+        {
+            return dbSet.ToList().Exists(predicate);
         }
 
         public TEntity? Find(Expression<Func<TEntity, bool>> predicate)
@@ -84,7 +85,6 @@ namespace HFA.DB.Model
         public void Update(TEntity entity)
         {
             dbSet.Update(entity);
-            context.SaveChanges();
         }
     }
 }
