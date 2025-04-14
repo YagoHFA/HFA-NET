@@ -45,7 +45,12 @@ namespace HFA.DB.Model
             dbSet.Remove(entity);
         }
 
-        public void DeleteMany(Expression<Func<TEntity, bool>> predicate)
+        public void DeleteMany(IQueryable<TEntity> entities)
+        {
+            dbSet.RemoveRange(entities);
+        }
+
+        public void DeleteWhere(Expression<Func<TEntity, bool>> predicate)
         {
             IQueryable<TEntity> entities = dbSet.Where(predicate);
             dbSet.RemoveRange(entities);
