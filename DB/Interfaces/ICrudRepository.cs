@@ -14,5 +14,6 @@ namespace HFA.DB.Model.Interfaces
 
         void Update(TEntity entity);
         TEntity? FindById(params object[] keyValues);
+        TEntity? FindById(object[] keyValues,  Func<IQueryable<TEntity>, IQueryable<TEntity>> includes);
     }
 } 
