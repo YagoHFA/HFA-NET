@@ -87,46 +87,6 @@ namespace HFA.DB.Model
             return dbSet.Find(keyValues);
         }
 
-        public TEntity? FindById(object[] keyValues, Func<IQueryable<TEntity>, IQueryable<TEntity>> includes)
-        {
-            IQueryable<TEntity> query = dbSet;
-
-            if (includes != null)
-                query = includes(query);
-
-            var entityType = context.Model.FindEntityType(typeof(TEntity));
-            if (entityType == null)
-                throw new InvalidOperationException($"Entity type {typeof(TEntity).Name} not found in model.");
-
-            var keyProps = entityType.FindPrimaryKey()?.Properties;
-            if (keyProps == null || keyProps.Count != keyValues.Length)
-                throw new ArgumentException("Key values count does not match the number of key properties.");
-
-            var parameter = Expression.Parameter(typeof(TEntity), "e");
-            Expression? predicate = null;
-
-            for (int i = 0; i < keyProps.Count; i++)
-            {
-                var propertyAccess = Expression.Call(
-                    typeof(EF),
-                    nameof(EF.Property),
-                    new[] { typeof(object) },
-                    parameter,
-                    Expression.Constant(keyProps[i].Name)
-                );
-
-                var equals = Expression.Equal(
-                    propertyAccess,
-                    Expression.Convert(Expression.Constant(keyValues[i]), typeof(object))
-                );
-
-                predicate = predicate == null ? equals : Expression.AndAlso(predicate, equals);
-            }
-
-            var lambda = Expression.Lambda<Func<TEntity, bool>>(predicate!, parameter);
-            return query.FirstOrDefault(lambda);
-        }
-
         public void Update(TEntity entity)
         {
             dbSet.Update(entity);

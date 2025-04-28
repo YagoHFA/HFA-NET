@@ -9,8 +9,11 @@ namespace HFA.DB.Model.Interfaces
     public interface IFindRepository<TEntity> where TEntity : class
     {
         TEntity? Find(Expression<Func<TEntity, bool>> predicate);
+
         IQueryable<TEntity>? FindAll();
+
         IQueryable<TEntity>? FindAll(Expression<Func<TEntity, bool>> predicate);
+        
         IQueryable<TEntity>? FindAll(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>,IOrderedQueryable<TEntity>>? orderBy = null);
     }
 }

@@ -13,7 +13,7 @@ namespace HFA.DB.Model.Interfaces
         void Delete(TEntity entity);
 
         void Update(TEntity entity);
+        
         TEntity? FindById(params object[] keyValues);
-        TEntity? FindById(object[] keyValues,  Func<IQueryable<TEntity>, IQueryable<TEntity>> includes);
     }
 } 
