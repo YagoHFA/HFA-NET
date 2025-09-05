@@ -12,6 +12,6 @@ namespace HFA.DB.Model.Interfaces
 
             void DeleteWhere(Expression<Func<TEntity, bool>> predicate);
             
-            void DeleteById(Object id);
+            void DeleteById(object id);
     }
 }

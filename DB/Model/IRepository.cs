@@ -6,7 +6,7 @@ namespace HFA;
 
 public interface IRepository<TEntity> : ICrudRepository<TEntity>, IFindRepository<TEntity>, IDeleteRepository<TEntity> where TEntity : class
 {
-    void AddMany(IEnumerable<TEntity> entities);
+    void AddMany(IQueryable<TEntity> entities);
 
     bool Any(Expression<Func<TEntity, bool>> predicate);
 

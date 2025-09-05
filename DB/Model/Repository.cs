@@ -6,6 +6,7 @@ namespace HFA.DB.Model
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly DbContext context;
+
         protected readonly DbSet<TEntity> dbSet;
 
         public Repository(DbContext context)
@@ -13,21 +14,36 @@ namespace HFA.DB.Model
             this.context = context;
             dbSet = context.Set<TEntity>();
         }
+
+        /// <summary>
+        /// Add a new entity to the database.
+        /// </summary>
+        /// <param name="entity">The generic entity to add.</param>
         public void Add(TEntity entity)
         {
             dbSet.Add(entity);
         }
 
-        public void AddMany(IEnumerable<TEntity> entities)
+        /// <summary>
+        /// Adds multiple entities to the database.
+        /// </summary>
+        /// <param name="entities">A list containing all entities to be added.</param>
+        public void AddMany(IQueryable<TEntity> entities)
         {
             dbSet.AddRange(entities);
         }
 
+        /// <summary>
+        /// Verifies whether any entity exists that matches the given filter.
+        /// </summary>
+        /// <param name="predicate">A filter used to search the database.</param>
+        /// <returns>True if at least one entity is found; otherwise, false.</returns>
         public bool Any(Expression<Func<TEntity, bool>> predicate)
         {
             return dbSet.Any(predicate);
         }
 
+        
         public int Count(Expression<Func<TEntity, bool>> predicate)
         {
             return dbSet.Count(predicate);
